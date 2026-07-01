@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Guia de Gravação — Avatar HeyGen | Café 40</title>
+<style>
+
+:root{
+  --navy:#10213a;
+  --navy-2:#16314f;
+  --cream:#faf7f1;
+  --ink:#19283d;
+  --ink-soft:#56657c;
+  --amber:#c2783a;
+  --amber-soft:#e9c9a8;
+  --line:#dcd4c4;
+  --serif: Georgia, 'Times New Roman', Times, serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family:var(--sans);
+  background:var(--navy);
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+  overflow:hidden;
+}
+.topbar{
+  padding:18px 20px 14px;
+  background:var(--navy);
+  color:var(--cream);
+  flex-shrink:0;
+}
+.topbar-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:12px;
+}
+.brand{
+  font-family:var(--serif);
+  font-size:17px;
+  letter-spacing:0.02em;
+  color:var(--cream);
+}
+.brand b{color:var(--amber-soft);}
+.counter{
+  font-size:13px;
+  color:var(--amber-soft);
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+.progress-track{
+  margin-top:12px;
+  height:4px;
+  background:rgba(255,255,255,0.14);
+  border-radius:4px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:var(--amber);
+  width:6.66%;
+  transition:width .35s ease;
+}
+.stage{
+  flex:1;
+  position:relative;
+  background:var(--cream);
+  overflow:hidden;
+}
+.slide{
+  position:absolute;
+  inset:0;
+  padding:36px 24px 24px;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  opacity:0;
+  transform:translateX(24px);
+  pointer-events:none;
+  transition:opacity .3s ease, transform .3s ease;
+}
+.slide.active{
+  opacity:1;
+  transform:translateX(0);
+  pointer-events:auto;
+}
+.slide.exit-left{transform:translateX(-24px);}
+.kicker{
+  font-family:var(--sans);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--amber);
+  margin-bottom:8px;
+}
+.slide h2{
+  font-family:var(--serif);
+  font-size:26px;
+  line-height:1.25;
+  color:var(--navy);
+  margin:0 0 18px;
+  max-width:30ch;
+}
+.body p{
+  font-size:15.5px;
+  line-height:1.65;
+  color:var(--ink);
+  margin:0 0 14px;
+}
+.body h3{
+  font-family:var(--sans);
+  font-size:13px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  color:var(--navy-2);
+  margin:22px 0 8px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:6px;
+}
+.body h3:first-child{margin-top:0;}
+.body ul, .body ol{
+  margin:0 0 14px;
+  padding-left:22px;
+}
+.body li{
+  font-size:15.5px;
+  line-height:1.6;
+  color:var(--ink);
+  margin-bottom:8px;
+}
+.body ol li::marker{
+  font-weight:700;
+  color:var(--amber);
+}
+.callout{
+  background:#fff;
+  border-left:4px solid var(--amber);
+  padding:14px 16px;
+  font-size:15px;
+  line-height:1.6;
+  color:var(--navy-2);
+  border-radius:0 6px 6px 0;
+  margin:14px 0;
+  box-shadow:0 1px 2px rgba(16,33,58,0.06);
+}
+.script{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:16px 18px;
+  margin:14px 0;
+  box-shadow:0 1px 3px rgba(16,33,58,0.08);
+}
+.script::before{
+  content:"ROTEIRO — LEIA EM VOZ ALTA";
+  display:block;
+  font-family:var(--sans);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.1em;
+  color:var(--amber);
+  margin-bottom:10px;
+}
+.script-line{
+  font-family:var(--serif);
+  font-size:16px;
+  line-height:1.75;
+  color:var(--navy);
+  margin:0 0 14px;
+}
+.script-line:last-child{margin-bottom:0;}
+.direction{
+  font-family:var(--sans);
+  font-style:italic;
+  font-size:13px;
+  color:var(--ink-soft);
+  background:#f3ede0;
+  padding:1px 6px;
+  border-radius:4px;
+}
+.navbar{
+  flex-shrink:0;
+  background:var(--navy);
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.navbtn{
+  flex:1;
+  border:none;
+  border-radius:10px;
+  padding:15px 14px;
+  font-family:var(--sans);
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  transition:opacity .15s ease, transform .1s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.navbtn:active{transform:scale(0.97);}
+.navbtn.prev{
+  background:transparent;
+  color:var(--cream);
+  border:1px solid rgba(255,255,255,0.28);
+  flex:0 0 110px;
+}
+.navbtn.next{
+  background:var(--amber);
+  color:var(--navy);
+  flex:1;
+}
+.navbtn:disabled{opacity:0.35; cursor:default;}
+.dots{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+  padding:0 16px 12px;
+  flex-shrink:0;
+  background:var(--navy);
+  flex-wrap:wrap;
+}
+.dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  border:none;
+  background:rgba(255,255,255,0.25);
+  cursor:pointer;
+  padding:0;
+}
+.dot.active{
+  background:var(--amber);
+  width:18px;
+  border-radius:4px;
+}
+.dot.done{background:var(--amber-soft);}
+
+@media (min-width:680px){
+  .slide{padding:48px 64px 32px;}
+  .slide h2{font-size:32px;}
+  .navbar{padding:18px 64px;max-width:760px;margin:0 auto;width:100%;}
+  .dots{max-width:760px;margin:0 auto;width:100%;}
+  .topbar-row, .progress-track{max-width:760px;margin:0 auto;width:100%;}
+}
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-row">
+      <div class="brand">Guia · <b>Avatar Café 40</b></div>
+      <div class="counter"><span id="cur">1</span> / 17</div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="fill"></div></div>
+  </div>
+
+  <div class="stage" id="stage">
+    
+        <section class="slide active" data-index="0">
+          <div class="kicker">Visão geral</div>
+          <h2>Como usar este guia</h2>
+          <div class="body"><p>Este guia é a sua direção de gravação, Mariana. Você é quem opera: segura a câmera, ajusta a luz, dá o comando de gravar e orienta a Dani. A Dani é quem aparece e fala. Cada passo diz exatamente o que você faz e o que pede pra ela.</p>
+<p>O objetivo é criar o avatar digital da Dani para o Café 40 — marca de cafés especiais — pra depois gerar vídeos de divulgação sem precisar gravar tudo de novo toda vez.</p>
+<h3>O que você vai gravar com a Dani (3 vídeos)</h3>
+<ol><li>Vídeo de frente, 2 a 3 minutos — cria o avatar. Roteiro pronto no passo 6.</li><li>Vídeo de lado, 2 minutos — dá mais qualidade aos ângulos. Roteiro pronto no passo 9.</li><li>Amostra de voz, 3 minutos — só o áudio, pra clonar a voz. Roteiro pronto no passo 10.</li></ol>
+<h3>O caminho: tudo começa e termina no HeyGen</h3>
+<ol><li>O vídeo de frente é gravado direto no app do HeyGen e já vira o avatar ali mesmo.</li><li>O vídeo de lado é adicionado ao avatar depois, como um ângulo extra.</li><li>O áudio da voz vai pro ElevenLabs, que clona a voz da Dani.</li><li>A voz clonada volta pro HeyGen e é integrada ao avatar.</li><li>Cada vídeo final é gerado dentro do HeyGen, juntando rosto + voz.</li></ol>
+<div class="callout">Todos os roteiros neste guia já estão prontos pra ler. Não precisa escrever nada, nem preencher nada. É só seguir a direção.</div></div>
+        </section>
+        
+        <section class="slide " data-index="1">
+          <div class="kicker">Preparação</div>
+          <h2>O que levar</h2>
+          <div class="body"><ul><li>Celular com bateria cheia e um carregador ou powerbank — são três vídeos, isso consome bateria.</li><li>Pelo menos 4 a 5 GB livres no celular pra caber tudo.</li><li>Fone com microfone, se tiver — melhora muito o áudio da voz. Se não tiver, o microfone do próprio celular resolve.</li><li>Um apoio firme pro celular: tripé, ou uma pilha de livros, ou uma prateleira na altura do rosto da Dani.</li><li>Um pano ou lençol claro, por garantia — serve pra suavizar uma janela forte demais ou cobrir um fundo bagunçado.</li><li>Este guia, impresso ou salvo no celular. Os roteiros dos passos 6, 9 e 10 precisam estar do seu lado na hora.</li></ul>
+<div class="callout">Você vai gravar os três vídeos direto pelo app do HeyGen, então precisa de internet no local. Vale confirmar que o Wi-Fi ou os dados do celular estão funcionando bem antes de começar.</div></div>
+        </section>
+        
+        <section class="slide " data-index="2">
+          <div class="kicker">Preparação</div>
+          <h2>Antes de sair de casa</h2>
+          <div class="body"><ul><li>Deixe o login e a senha do HeyGen à mão (ou já entre na conta pelo navegador do celular).</li><li>Crie a conta no ElevenLabs antes de viajar — o passo 14 explica como. O processamento da voz em si pode ficar pra quando voltar.</li><li>Leia os três roteiros (passos 6, 9 e 10) uma vez antes de sair, pra já chegar sabendo o ritmo. Se puder, mande pra Dani ler antes também.</li></ul>
+<div class="callout">Nada nos roteiros precisa ser alterado. Já estão completos e prontos pra Dani ler direto.</div></div>
+        </section>
+        
+        <section class="slide " data-index="3">
+          <div class="kicker">No local</div>
+          <h2>Montar o cenário</h2>
+          <div class="body"><h3>Onde posicionar a câmera</h3>
+<p>Coloque o celular no apoio, na altura do rosto da Dani, a uns 60 a 90 cm dela — mais ou menos a distância de um braço esticado com uma folga. Perto demais distorce o rosto; longe demais perde detalhe.</p>
+<p>Confirme que está gravando em 1080p a 30fps no mínimo (o padrão de qualquer celular moderno). Se o aparelho tiver 4K, melhor ainda.</p>
+<h3>A luz (o detalhe que mais faz diferença)</h3>
+<p>Escolha um cômodo com janela e grave de dia. A Dani fica de frente pra janela, com a luz batendo no rosto dela. A janela nunca pode ficar atrás da Dani — se ficar, o rosto escurece e o fundo estoura de claro.</p>
+<p>Se a luz do sol estiver muito dura, feche uma cortina fina ou use o pano claro na frente da janela pra suavizar.</p>
+<h3>Fundo e roupa</h3>
+<p>Fundo: uma parede lisa, sem quadros, espelho ou bagunça atrás. Quanto mais limpo, melhor o avatar.</p>
+<p>Roupa da Dani: qualquer peça que ela use no dia a dia. Só evite estampas com letras grandes ou logos, que podem embaralhar a imagem do avatar.</p>
+<h3>Silêncio</h3>
+<p>Desligue TV, ventilador e ar-condicionado barulhento. Feche a janela se tiver barulho de rua. Silêncio limpo importa nos três vídeos, e é essencial no vídeo de voz (passo 11).</p></div>
+        </section>
+        
+        <section class="slide " data-index="4">
+          <div class="kicker">No local</div>
+          <h2>Teste de 5 segundos e conversa com a Dani</h2>
+          <div class="body"><h3>Grave um teste antes do take real</h3>
+<p>Grave 5 segundos e assista. Confira três coisas: a luz não fica piscando, o foco não entra e sai sozinho, e dá pra ouvir a voz com clareza. Se o foco ficar 'respirando', toque na tela em cima do rosto da Dani pra travar antes de valer.</p>
+<h3>Explique pra Dani, em uma frase</h3>
+<div class="callout">"Vou gravar três vídeos curtos: um de frente, um de lado e um só da sua voz. Depois disso, seu avatar vai poder falar qualquer texto novo, com sua voz e seu jeito — sem você precisar gravar de novo toda vez."</div>
+<p>Confirme que ela está de acordo. Isso é importante e a própria plataforma exige — no passo 8 ela grava um código curto confirmando essa autorização.</p></div>
+        </section>
+        
+        <section class="slide " data-index="5">
+          <div class="kicker">Roteiro 1 — de frente</div>
+          <h2>O que a Dani vai falar (2 a 3 minutos)</h2>
+          <div class="body"><p>Este é o roteiro do vídeo de frente. Está completo — a Dani lê do começo ao fim. As marcações entre colchetes são a sua direção: elas dizem quando pausar, sorrir ou gesticular. Não são pra ler em voz alta, são pra você orientar a Dani.</p>
+<div class="script">
+<p class="script-line"><span class="direction">[Comece com a Dani parada 2 a 3 segundos, olhando pra câmera, lábios fechados, leve sorriso]</span></p>
+<p class="script-line">Oi! Eu sou a Dani, do Café 40. <span class="direction">[pausa breve, sorriso natural]</span> O Café 40 é uma marca de cafés especiais — daquele café que você sente a diferença já no primeiro gole.</p>
+<p class="script-line">A gente seleciona cada grão com cuidado, direto de produtores que levam a qualidade a sério. Da escolha da lavoura até o ponto certo da torra, cada lote é preparado pra chegar até você com o melhor sabor possível. <span class="direction">[tom confiante; pode abrir levemente as mãos ao falar, sempre abaixo da altura do peito]</span></p>
+<p class="script-line"><span class="direction">[pausa de 1 a 2 segundos, lábios fechados]</span></p>
+<p class="script-line">O que move o Café 40 é simples: a gente acredita que um bom café transforma um momento comum num momento seu. <span class="direction">[tom mais pessoal e caloroso]</span> Aquele café da manhã que dá o start no dia, a pausa da tarde, o cafezinho depois do almoço que você não abre mão.</p>
+<p class="script-line"><span class="direction">[pausa breve, leve sorriso]</span></p>
+<p class="script-line">Por isso a gente trata cada detalhe com tanto carinho — porque sabe que esse café vai fazer parte da sua rotina. E não é qualquer café: é café especial, selecionado pra quem sabe a diferença.</p>
+<p class="script-line"><span class="direction">[pausa breve]</span></p>
+<p class="script-line">Se você ainda não conhece o Café 40, essa é a sua deixa pra experimentar. <span class="direction">[ênfase leve, sorriso aberto]</span> Peça o seu e sinta a diferença de um café especial de verdade. <span class="direction">[gesto leve de convite com a mão, segure o sorriso por 1 a 2 segundos antes de parar de gravar]</span></p>
+</div>
+<div class="callout">Peça pra Dani ler num ritmo de conversa, sem pressa. Se ela errar, é só recomeçar do zero — o vídeo tem que ser um take único, sem cortes.</div>
+<div class="callout">Importante: este roteiro NÃO inclui o código de consentimento. O código é uma gravação curta e separada, feita logo depois deste vídeo — o passo 8 explica direitinho.</div></div>
+        </section>
+        
+        <section class="slide " data-index="6">
+          <div class="kicker">Gravação 1</div>
+          <h2>Gravando o vídeo de frente</h2>
+          <div class="body"><p>Este é o vídeo mais importante: ele ensina o avatar a se mexer, gesticular e ter expressão. Tudo que a Dani fizer aqui, o avatar repete depois.</p>
+<h3>Abrir a gravação no app HeyGen</h3>
+<ol><li>Abra o app do HeyGen e vá em Avatars → Create New Avatar → Digital Twin.</li><li>Escolha gravar pela câmera do celular. O próprio app conduz a gravação, mostrando o enquadramento na tela.</li><li>Grave o roteiro do passo 6, do início ao fim.</li><li>Assim que a Dani terminar, o app já pede o código de consentimento na sequência — é a gravação curta explicada no passo 8. Faça na hora.</li></ol>
+<h3>O que orientar a Dani durante a gravação</h3>
+<ul><li>Olhar direto pra câmera o tempo todo, inclusive nas pausas. Nada de olhar pro lado ou pra baixo.</li><li>Falar com energia natural — este é o ponto que mais importa. Voz animada gera avatar vivo; voz monótona gera avatar sem graça.</li><li>Manter as mãos sempre abaixo do peito. Se ela levantar muito a mão, o avatar exagera esse gesto depois.</li><li>Fazer as pausas de lábios fechados, sem 'hã' nem respiração alta — isso dá transições naturais ao avatar.</li><li>Mexer a cabeça à vontade, mas sem virar mais que uns 30 graus pro lado.</li><li>Falar do início ao fim sem parar. É um take único, sem cortes. Errou, recomeça.</li></ul>
+<div class="callout">Pode repetir quantas vezes precisar. Só o take completo e bom é que vale — os outros você descarta.</div></div>
+        </section>
+        
+        <section class="slide " data-index="7">
+          <div class="kicker">Gravação 1</div>
+          <h2>Código de consentimento</h2>
+          <div class="body"><p>O código de consentimento é uma segunda gravação, curta (uns 5 segundos), separada do vídeo de divulgação que a Dani acabou de gravar. Nela, a Dani só olha pra câmera e fala uma frase autorizando a criação do avatar. A plataforma exige isso — sem o código, o avatar não é aprovado.</p>
+<div class="callout">Resumindo: são dois vídeos distintos. Primeiro o de 2 a 3 minutos (roteiro do passo 6). Depois, à parte, este trechinho de 5 segundos com o código. Um não entra dentro do outro.</div>
+<h3>Como fazer, dentro do app</h3>
+<p>O próprio app HeyGen conduz isso pra você: assim que a Dani termina o vídeo de 2 a 3 minutos, aparece um código numérico na tela e o app pede a gravação do consentimento em seguida. Peça pra Dani olhar pra câmera e falar:</p>
+<div class="callout">"Para fins de segurança, meu código único é [o número que aparecer na tela]."</div>
+<p>Pronto — o app grava esse trecho na hora e registra tudo junto automaticamente. Você não precisa juntar nada nem gravar nada à parte por fora.</p></div>
+        </section>
+        
+        <section class="slide " data-index="8">
+          <div class="kicker">Roteiro 2 — de lado</div>
+          <h2>O vídeo de lado (a Dani também fala)</h2>
+          <div class="body"><p>Sim, no vídeo de lado a Dani fala também — não é um vídeo mudo. Ela repete um texto enquanto fica de lado, pra plataforma aprender como o rosto dela se move nesse ângulo. Isso melhora bastante os vídeos futuros em que ela aparecer meio de perfil.</p>
+<h3>Como posicionar</h3>
+<ul><li>Vire a Dani a 45 graus — meio de lado, não de perfil completo. O rosto inteiro precisa continuar visível pra câmera; se um lado do rosto sumir, a plataforma recusa.</li><li>Mesma luz, mesmo fundo, mesma distância do vídeo de frente.</li><li>Ela mantém o olhar na câmera, mesmo estando virada de lado.</li><li>Este vídeo precisa ter no mínimo 2 minutos. Se o roteiro abaixo acabar antes, é só a Dani repetir do começo até fechar os 2 minutos.</li></ul>
+<h3>O que a Dani fala neste vídeo</h3>
+<div class="script">
+<p class="script-line"><span class="direction">[Dani a 45 graus, rosto inteiro visível, olhando pra câmera. Comece com 2 segundos de pausa, lábios fechados]</span></p>
+<p class="script-line">O Café 40 é uma marca de cafés especiais, feita pra quem gosta de um café de verdade. <span class="direction">[tom natural, de conversa]</span></p>
+<p class="script-line">Cada grão é selecionado com cuidado, torrado no ponto certo, pra chegar até você com todo o aroma e o sabor que um café especial precisa ter. <span class="direction">[pode fazer um gesto leve com a mão, abaixo do peito]</span></p>
+<p class="script-line"><span class="direction">[pausa breve, lábios fechados]</span></p>
+<p class="script-line">Tem café pra todo tipo de gosto: pra quem gosta mais encorpado, pra quem prefere mais suave, pra quem toma coado de manhã ou um espresso à tarde.</p>
+<p class="script-line">A ideia é simples: levar qualidade de verdade pra dentro da sua casa, no seu dia a dia. <span class="direction">[tom caloroso, leve sorriso]</span></p>
+<p class="script-line"><span class="direction">[pausa breve]</span></p>
+<p class="script-line">Se você ainda não experimentou, vale conhecer. Peça o seu Café 40 e sinta a diferença de um café selecionado com cuidado. <span class="direction">[sorriso]</span></p>
+<p class="script-line"><span class="direction">[Se ainda não fechou 2 minutos, recomece o texto do início, com naturalidade, até completar]</span></p>
+</div>
+<div class="callout">Este vídeo de lado você grava pela câmera normal do celular, não pelo fluxo do avatar. Ele será adicionado ao avatar depois, como um "Look" extra — mas só dá pra fazer isso quando o avatar principal terminar de processar (uns 10 a 20 minutos). Por isso: grave agora, com a Dani presente, e guarde o arquivo. O passo 13 mostra como enviá-lo.</div></div>
+        </section>
+        
+        <section class="slide " data-index="9">
+          <div class="kicker">Roteiro 3 — voz</div>
+          <h2>A amostra de voz (3 minutos)</h2>
+          <div class="body"><p>Este é só o áudio — a câmera não importa aqui, o que vale é o som. É esse arquivo que vai pro ElevenLabs clonar a voz da Dani. O roteiro está completo, pra ler direto.</p>
+<div class="script">
+<p class="script-line">O Café 40 nasceu de uma ideia simples: levar café especial de verdade pra dentro da casa das pessoas, com todo o cuidado que um bom grão merece. Cada lote que a gente seleciona passa por um processo caprichado, pensado pra realçar o melhor de cada origem.</p>
+<p class="script-line">A gente trabalha com grãos escolhidos a dedo, de produtores que se importam com qualidade do começo ao fim. Do cultivo à torra, cada etapa é acompanhada de perto, porque é isso que separa um café comum de um café especial.</p>
+<p class="script-line">Tem cliente que já virou fã e pede sempre o mesmo blend, aquele que combina com o gosto dele. Tem quem goste de variar, experimentando um lote diferente a cada mês. E tem quem descobre o Café 40 pela indicação de um amigo, prova, e vira cliente na hora.</p>
+<p class="script-line">A gente já mandou café pra tanta gente, em tantos cantos diferentes, cada um com um jeito próprio de preparar e aproveitar. Tem quem faça questão do coado tradicional, quem ame uma prensa francesa, quem só funcione depois do primeiro espresso da manhã.</p>
+<p class="script-line">Um dos momentos que eu mais gosto é receber mensagem de cliente contando que sentiu a diferença logo no primeiro gole. É sempre um relato de surpresa, de descoberta — e é por isso que a gente faz o que faz, todos os dias.</p>
+<p class="script-line">Porque no fim das contas, o Café 40 não é só sobre vender café. É sobre levar qualidade de verdade pra rotina de quem confia na marca. É sobre transformar um gesto simples, tomar um café, num pequeno momento de prazer no meio do dia.</p>
+<p class="script-line">E é exatamente isso que a gente pretende continuar fazendo: selecionar os melhores grãos, torrar com cuidado, e entregar na sua casa um café que valha cada gole. Um lote de cada vez, sempre com o mesmo capricho do primeiro dia.</p>
+</div>
+<div class="callout">Peça pra Dani ler num ritmo de conversa tranquila, sem forçar entonação. É um take único e contínuo — se ela tossir ou parar no meio, recomece do início.</div></div>
+        </section>
+        
+        <section class="slide " data-index="10">
+          <div class="kicker">Gravação 3</div>
+          <h2>Gravando a amostra de voz</h2>
+          <div class="body"><h3>Microfone</h3>
+<p>Se tiver fone com microfone, use — posicione a uns 15 a 20 cm da boca da Dani, sem encostar em roupa e sem tapar com a mão. Sem fone, o microfone do celular funciona bem. Evite o microfone de notebook, que costuma pegar mais chiado.</p>
+<h3>Ambiente</h3>
+<p>O mais silencioso possível. Se o cômodo tiver eco (sala vazia ecoa muito), procure um lugar mais 'abafado', com tapete, cortina ou sofá — esses ambientes absorvem o eco.</p>
+<h3>Gravando</h3>
+<ul><li>A Dani lê o roteiro do passo anterior, ritmo de conversa, sem pressa.</li><li>Mesma distância do microfone e mesmo volume de voz do começo ao fim.</li><li>Take único e contínuo. Tossiu, pigarreou, parou? Recomeça do zero.</li><li>A câmera é opcional aqui — o que importa é o áudio. Se quiser filmar mesmo assim, sem se preocupar com enquadramento, tudo bem.</li></ul></div>
+        </section>
+        
+        <section class="slide " data-index="11">
+          <div class="kicker">Antes de ir embora</div>
+          <h2>Conferência final no local</h2>
+          <div class="body"><p>Antes de encerrar, assista aos três vídeos ali mesmo. É muito mais fácil regravar com a Dani do lado do que tentar remarcar depois.</p>
+<ul><li>Vídeo de frente (2 a 3 min): rosto iluminado e visível o tempo todo, sem cortes, áudio limpo, pausas respeitadas?</li><li>Vídeo de lado (2 min): rosto inteiro visível mesmo de lado, a Dani falando, mesma luz e áudio?</li><li>Amostra de voz (3 min): contínua, sem ruído de fundo, sem cortes, volume constante?</li><li>Código de consentimento: gravado logo após o vídeo de frente, dentro do app?</li></ul>
+<div class="callout">Achou algum problema? Regrave agora. Este é o último momento fácil de corrigir.</div></div>
+        </section>
+        
+        <section class="slide " data-index="12">
+          <div class="kicker">De volta</div>
+          <h2>Adicionar o vídeo de lado ao avatar</h2>
+          <div class="body"><p>O avatar da Dani já foi criado durante a gravação, direto no app — o vídeo de frente e o código de consentimento já estão salvos na conta do HeyGen. O que falta agora é só uma coisa: adicionar o vídeo de lado como um ângulo extra.</p>
+<h3>Primeiro, confirme que o avatar terminou de processar</h3>
+<ol><li>Entre na conta HeyGen e vá em Avatars.</li><li>Selecione o avatar da Dani. Se ainda estiver processando, espere (leva de 10 a 20 minutos no total).</li><li>Quando estiver pronto, o HeyGen mostra um preview. Revise a sincronia dos lábios, a naturalidade e os gestos. Se algo saiu estranho, dá pra refazer — isso não gasta os vídeos mensais.</li></ol>
+<h3>Adicionar o vídeo de lado (como um novo Look)</h3>
+<ol><li>Ainda na página do avatar da Dani, procure a opção de adicionar um novo Look — algo como '+ Add Look' ou 'New Look'.</li><li>Escolha adicionar por vídeo (não por foto).</li><li>Envie o vídeo de lado de 2 minutos que você gravou. Aguarde a verificação.</li></ol>
+<div class="callout">O vídeo de lado entra como um 'Look' extra do mesmo avatar. Não cria um segundo avatar — é a mesma Dani, com um ângulo a mais disponível.</div></div>
+        </section>
+        
+        <section class="slide " data-index="13">
+          <div class="kicker">Voz</div>
+          <h2>ElevenLabs, passo a passo</h2>
+          <div class="body"><h3>1. Conta e plano</h3>
+<p>O plano gratuito do ElevenLabs deixa usar vozes prontas, mas não deixa clonar uma voz nova. Pra clonar a voz da Dani, é preciso pelo menos o plano Starter (o mais barato, em torno de US$ 5 por mês).</p>
+<h3>2. Criando o clone (Instant Voice Clone)</h3>
+<ol><li>Entre no painel do ElevenLabs e clique em Voices, no menu lateral.</li><li>Clique em Add a new voice (ou no botão +) → Create Voice.</li><li>Escolha Instant Voice Clone.</li><li>Dê um nome fácil de achar depois, como 'Dani — Café 40'.</li><li>Arraste o arquivo da amostra de voz de 3 minutos (o do passo 11) pra área de upload. Aceita MP3 e WAV.</li><li>Preencha a descrição da voz: feminina, tom caloroso, sotaque brasileiro. Isso ajuda o modelo a entender a voz.</li><li>Marque a caixa de consentimento, confirmando que a Dani autorizou clonar a própria voz.</li><li>Confirme. O clone fica pronto em segundos.</li></ol>
+<h3>3. Testando</h3>
+<p>Digite uma frase qualquer no painel e ouça o resultado na voz clonada. Se quiser, ajuste os controles de Stability (estabilidade) e Similarity (semelhança com a voz real) até soar natural.</p>
+<h3>4. Pegando a chave de acesso</h3>
+<ol><li>Salve a voz — ela aparece na sua biblioteca, em My Voices.</li><li>Vá nas configurações da conta (ícone de perfil → API Keys, ou Settings).</li><li>Gere ou copie a chave de acesso (API key). Você vai usar ela no próximo passo, dentro do HeyGen.</li></ol>
+<div class="callout">O ElevenLabs é um serviço separado, com créditos próprios por mês. Se os créditos acabarem, a voz para de funcionar no HeyGen até renovar o plano ou comprar mais.</div></div>
+        </section>
+        
+        <section class="slide " data-index="14">
+          <div class="kicker">Voz</div>
+          <h2>Levar a voz de volta pro HeyGen</h2>
+          <div class="body"><ol><li>No HeyGen, abra o AI Studio e selecione o avatar da Dani.</li><li>Nas configurações de voz, clique em Voice → + New Voice.</li><li>Escolha Integrate 3rd Party Voice → Import Voice.</li><li>Selecione ElevenLabs na lista de provedores.</li><li>Cole a chave de acesso que você copiou no passo anterior e confirme.</li><li>A voz da Dani aparece agora na lista de vozes do avatar, pronta pra usar.</li></ol>
+<div class="callout">Feito isso uma vez, toda vez que gerar um vídeo é só escolher essa voz na lista. Não precisa repetir a integração.</div></div>
+        </section>
+        
+        <section class="slide " data-index="15">
+          <div class="kicker">Primeiro vídeo</div>
+          <h2>Gerar o primeiro vídeo de divulgação</h2>
+          <div class="body"><p>Agora o avatar já pode falar qualquer texto. Este é o roteiro do primeiro vídeo publicável do Café 40 — pronto pra colar no HeyGen. É um vídeo de apresentação da marca, curto, do jeito que funciona em rede social.</p>
+<h3>Passo a passo no HeyGen</h3>
+<ol><li>Vá em Video Studio → novo projeto.</li><li>Selecione o avatar da Dani e a voz clonada no ElevenLabs.</li><li>Cole o roteiro abaixo no campo de texto.</li><li>No campo de movimento/estilo, descreva: 'confiante e caloroso, gestos leves, olhando pra câmera'.</li><li>Clique em gerar e aguarde.</li></ol>
+<h3>Roteiro do primeiro vídeo (pronto pra colar)</h3>
+<div class="script">
+<p class="script-line">Oi! Eu sou a Dani, do Café 40.</p>
+<p class="script-line">Se você ama café de verdade, chega mais — porque aqui a gente é apaixonado por café especial.</p>
+<p class="script-line">Cada grão do Café 40 é selecionado com cuidado e torrado no ponto certo, pra chegar até você com todo o aroma e o sabor que um café especial precisa ter.</p>
+<p class="script-line">Não importa como você gosta: coado, espresso, prensa francesa. Tem sempre um Café 40 perfeito pro seu momento.</p>
+<p class="script-line">Faça um teste: peça o seu e sinta a diferença logo no primeiro gole. A gente tem certeza que você vai voltar pra pedir mais.</p>
+<p class="script-line">Café 40. Café especial, do jeito que você merece.</p>
+</div>
+<div class="callout">Este roteiro tem cerca de 90 palavras — dá um vídeo de aproximadamente 40 segundos, ideal pra Instagram e redes sociais. Ele consome 1 dos vídeos mensais do plano gratuito.</div></div>
+        </section>
+        
+        <section class="slide " data-index="16">
+          <div class="kicker">Avaliação</div>
+          <h2>Checklist do resultado</h2>
+          <div class="body"><p>Depois de gerar o vídeo, confira:</p>
+<ul><li>Os lábios estão sincronizados com o áudio?</li><li>A voz soa natural ou robótica?</li><li>Os nomes e as palavras saíram bem pronunciados?</li><li>A expressão do rosto combina com o tom da fala?</li><li>Os gestos das mãos ficaram naturais — nem parados demais, nem exagerados?</li></ul>
+<p>Mesmo em 720p e com marca d'água (limites do plano gratuito), já dá pra avaliar bem a qualidade. Se o resultado convencer, vale considerar o upgrade pra um plano pago — é o que tira a marca d'água e libera o uso comercial do avatar da Dani.</p>
+<div class="callout">Deu tudo certo? O avatar está pronto. A partir daqui, é só colar textos novos no HeyGen pra gerar quantos vídeos o Café 40 precisar.</div></div>
+        </section>
+        
+  </div>
+
+  <div class="dots" id="dots"><button class="dot active" data-go="0" aria-label="Ir para passo 1"></button><button class="dot" data-go="1" aria-label="Ir para passo 2"></button><button class="dot" data-go="2" aria-label="Ir para passo 3"></button><button class="dot" data-go="3" aria-label="Ir para passo 4"></button><button class="dot" data-go="4" aria-label="Ir para passo 5"></button><button class="dot" data-go="5" aria-label="Ir para passo 6"></button><button class="dot" data-go="6" aria-label="Ir para passo 7"></button><button class="dot" data-go="7" aria-label="Ir para passo 8"></button><button class="dot" data-go="8" aria-label="Ir para passo 9"></button><button class="dot" data-go="9" aria-label="Ir para passo 10"></button><button class="dot" data-go="10" aria-label="Ir para passo 11"></button><button class="dot" data-go="11" aria-label="Ir para passo 12"></button><button class="dot" data-go="12" aria-label="Ir para passo 13"></button><button class="dot" data-go="13" aria-label="Ir para passo 14"></button><button class="dot" data-go="14" aria-label="Ir para passo 15"></button><button class="dot" data-go="15" aria-label="Ir para passo 16"></button><button class="dot" data-go="16" aria-label="Ir para passo 17"></button></div>
+
+  <div class="navbar">
+    <button class="navbtn prev" id="btnPrev">← Anterior</button>
+    <button class="navbtn next" id="btnNext">Próximo →</button>
+  </div>
+
+<script>
+(function(){
+  var total = 17;
+  var idx = 0;
+  var slides = document.querySelectorAll('.slide');
+  var dots = document.querySelectorAll('.dot');
+  var fill = document.getElementById('fill');
+  var cur = document.getElementById('cur');
+  var btnPrev = document.getElementById('btnPrev');
+  var btnNext = document.getElementById('btnNext');
+
+  function render(newIdx, dir){
+    if(newIdx < 0 || newIdx >= total) return;
+    slides[idx].classList.remove('active');
+    idx = newIdx;
+    slides[idx].classList.add('active');
+    slides[idx].scrollTop = 0;
+
+    dots.forEach(function(d, i){
+      d.classList.toggle('active', i === idx);
+      d.classList.toggle('done', i < idx);
+    });
+
+    fill.style.width = ((idx+1)/total*100) + '%';
+    cur.textContent = idx + 1;
+    btnPrev.disabled = idx === 0;
+    btnNext.textContent = idx === total - 1 ? 'Concluído ✓' : 'Próximo →';
+  }
+
+  btnNext.addEventListener('click', function(){
+    if(idx < total - 1) render(idx + 1);
+  });
+  btnPrev.addEventListener('click', function(){
+    if(idx > 0) render(idx - 1);
+  });
+  dots.forEach(function(d){
+    d.addEventListener('click', function(){
+      render(parseInt(d.getAttribute('data-go'), 10));
+    });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight') btnNext.click();
+    if(e.key === 'ArrowLeft') btnPrev.click();
+  });
+
+  // swipe support for mobile
+  var touchStartX = null;
+  var stage = document.getElementById('stage');
+  stage.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; }, {passive:true});
+  stage.addEventListener('touchend', function(e){
+    if(touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if(Math.abs(dx) > 60){
+      if(dx < 0) btnNext.click(); else btnPrev.click();
+    }
+    touchStartX = null;
+  }, {passive:true});
+
+  render(0);
+})();
+</script>
+</body>
+</html>
